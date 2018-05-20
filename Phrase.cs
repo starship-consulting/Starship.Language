@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language.Interfaces;
-using CrowdCode.Library.Modules.Language.NGrams;
-using CrowdCode.Library.Modules.Language.Syllables;
-using Starship.Language;
+using Starship.Language.Interfaces;
+using Starship.Language.NGrams;
 using Starship.Language.Phonetics;
 using Starship.Language.Syllables;
 
-namespace CrowdCode.Library.Modules.Language {
+namespace Starship.Language {
     public class Phrase : HasSyllables {
         public Phrase() {
             Words = new List<Word>();

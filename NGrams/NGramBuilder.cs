@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language;
-using CrowdCode.Library.Modules.Language.NGrams;
-using CrowdCode.Library.Modules.Language.Resources;
 using Starship.Core.Collections;
 using Starship.Core.Extensions;
+using Starship.Language.Resources;
 
 namespace Starship.Language.NGrams {
     public class NGramBuilder {

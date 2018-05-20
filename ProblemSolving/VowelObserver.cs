@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CrowdCode.Library.Modules.Language.ProblemSolving;
 using Starship.Core.ProblemSolving;
 
 namespace Starship.Language.ProblemSolving {

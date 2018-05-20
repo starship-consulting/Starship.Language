@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language.Syllables;
 using Starship.Language.Syllables;
 
-namespace CrowdCode.Library.Modules.Language {
+namespace Starship.Language {
     public class ColoredWordGroup {
         public ColoredWordGroup() {
             Texts = new List<ColoredText>();

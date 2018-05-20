@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CrowdCode.Library.Modules.Language.NGrams {
+namespace Starship.Language.NGrams {
     public class NGram {
         
         public NGram(string text, string[] words, long frequency) {

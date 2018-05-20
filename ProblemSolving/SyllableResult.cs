@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using CrowdCode.Library.Modules.Language.Syllables;
+﻿using System.Collections.Generic;
 using Starship.Language.Phonetics;
 using Starship.Language.Syllables;
 
-namespace CrowdCode.Library.Modules.Language.ProblemSolving {
+namespace Starship.Language.ProblemSolving {
     public class SyllableResult {
 
         public SyllableResult() {

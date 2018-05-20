@@ -1,10 +1,9 @@
-﻿using System;
-using CrowdCode.Library.Modules.Language.Syllables.Rules;
-using Starship.Language.Phonetics;
+﻿using Starship.Language.Phonetics;
 using Starship.Language.Syllables.Rules;
 
-namespace CrowdCode.Library.Modules.Language.Syllables {
+namespace Starship.Language.Syllables {
     public abstract class SyllableRule {
+
         public virtual RuleEvaluation ShouldAddPhoneme(Phoneme phoneme, SyllableContext context) {
             return True();
         }

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language;
-using CrowdCode.Library.Modules.Language.Syllables;
 using Starship.Core.Extensions;
 using Starship.Language.Phonetics;
 using Starship.Language.Syllables;
@@ -15,28 +13,90 @@ namespace Starship.Language {
 
         public static List<string> GetMultiRhymes(Word word) {
             var results = new Dictionary<int, List<Word>>();
+            var rhymedSyllables = new Dictionary<int, List<Syllable>>();
 
-            SyllableMapper.UniqueSyllables.Values.ForEachParallel(syllable => {
-                for (var index = 0; index < word.Syllables.Count; index++) {
-                    var match = word.Syllables[index];
+            for (var index = 0; index < word.Syllables.Count; index++) {
+                results.Add(index+1, new List<Word>());
+                rhymedSyllables.Add(index, new List<Syllable>());
+            }
+            
+            SyllableMapper.UniqueSyllables.Values.ForEachParallel(eachUniqueSyllable => {
+                for (var eachSyllableIndex = 0; eachSyllableIndex < word.Syllables.Count; eachSyllableIndex++) {
+
+                    var syllable = word.Syllables[eachSyllableIndex];
                     
-                    if (IsRhyme(match, syllable)) {
-                        foreach (var rhymeWord in syllable.GetWords()) {
-                            if (rhymeWord.Syllables.Count <= index + 1) {
-                                lock (results) {
-                                    if (!results.ContainsKey(index)) {
-                                        results.Add(index, new List<Word>());
-                                    }
-
-                                    results[index].Add(rhymeWord);
-                                }
-                            }
-                        }
+                    if (IsRhyme(syllable, eachUniqueSyllable)) {
+                        
+                        rhymedSyllables[eachSyllableIndex].Add(eachUniqueSyllable);
                     }
                 }
             });
 
-            return results.Values.SelectMany(each => each).Select(each => each.Text).ToList();
+            foreach(var syllableSet in rhymedSyllables) {
+                var index = syllableSet.Key;
+
+                foreach(var syllable in syllableSet.Value) {
+                    foreach(var eachWord in syllable.GetWords(0)) {
+                        if (eachWord.Syllables.Count <= index + 1) {
+
+                            if(eachWord.GetNGramScore(index) <= 0) {
+                                continue;
+                            }
+
+                            var count = 0;
+                            var match = true;
+
+                            foreach(var eachSyllable in eachWord.Syllables.Skip(1)) {
+                                count += 1;
+
+                                if(!rhymedSyllables[count].Contains(eachSyllable)) {
+                                    match = false;
+                                    break;
+                                }
+                            }
+
+                            if(match){
+                                results[index+1].Add(eachWord);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            var strict = true;
+            
+            var matches = FindMultiSyllables(results, word.Syllables.Count).ToList();
+
+            return matches.Where(each => each.GetNGramScore() > 0).Select(each => each.Text).ToList();
+        }
+
+        private static IEnumerable<Phrase> FindMultiSyllables(Dictionary<int, List<Word>> wordlist, int syllables, int level = 0) {
+            foreach (var set in wordlist) {
+                var required = set.Key - level;
+
+                if (required <= 0) {
+                    continue;
+                }
+
+                foreach (var eachWord in set.Value.Where(each => each.Syllables.Count == required).ToList()) {
+                    var lookAhead = required + level;
+
+                    if (syllables == lookAhead) {
+                        yield return new Phrase(eachWord);
+                        continue;
+                    }
+
+                    var words = FindMultiSyllables(wordlist, syllables, lookAhead).ToList();
+
+                    foreach (var word in words) {
+                        var combined = new List<Word>();
+                        combined.Add(eachWord);
+                        combined.AddRange(word.Words);
+
+                        yield return new Phrase(combined.ToArray());
+                    }
+                }
+            }
         }
 
         public static List<Word> GetRhymes(Syllable match, int maxSyllables = 0) {
@@ -86,74 +146,70 @@ namespace Starship.Language {
             return IsRhyme(English.GetWord(word1), English.GetWord(word2));
         }
 
-        public static bool IsRhyme(Word word1, Word word2) {
+        public static bool IsRhyme(Word word1, Word word2, out string reason) {
             var permutations = word1.GetHomographs().ForEachPermutation(word2.GetHomographs());
+            
+            reason = string.Empty;
 
             foreach (var set in permutations) {
-                if (IsRhyme(set.Item1.Syllables.Last(), set.Item2.Syllables.Last())) {
+                if (IsRhyme(set.Item1.Syllables.Last(), set.Item2.Syllables.Last(), out reason)) {
                     return true;
                 }
             }
-
+            
             return false;
         }
 
-        public static bool IsRhyme(Syllable syllable1, Syllable syllable2) {
+        public static bool IsRhyme(Word word1, Word word2) {
+            return IsRhyme(word1, word2, out _);
+        }
+
+        public static bool IsRhyme(Syllable syllable1, Syllable syllable2, out string reason) {
             var phonemes1 = syllable1.FromNucleus().ToList();
             var phonemes2 = syllable2.FromNucleus().ToList();
 
             if (phonemes1.Count == 0 || phonemes2.Count == 0) {
+                reason = "No phonemes found.";
                 return false;
             }
 
-            //l aa k s
-            //b aa k s
-
-            // Remove 'ng' from 'ing' words
-            /*if (phonemes1.Last().Text.ToLower() == "ng") {
-                phonemes1 = phonemes1.Take(phonemes1.Count - 1).ToList();
-            }
-            if (phonemes2.Last().Text.ToLower() == "ng") {
-                phonemes2 = phonemes2.Take(phonemes2.Count - 1).ToList();
-            }*/
-
-            List<Phoneme> iterator1;
-            List<Phoneme> iterator2;
+            List<Phoneme> mostPhonemes;
+            List<Phoneme> lessPhonemes;
 
             if (phonemes1.Count > phonemes2.Count) {
-                iterator1 = phonemes1;
-                iterator2 = phonemes2;
+                mostPhonemes = phonemes1;
+                lessPhonemes = phonemes2;
             }
             else {
-                iterator1 = phonemes2;
-                iterator2 = phonemes1;
+                mostPhonemes = phonemes2;
+                lessPhonemes = phonemes1;
             }
 
-            var limit = iterator2.Count - 1;
+            var limit = lessPhonemes.Count - 1;
 
-            for (var index = 0; index < iterator1.Count; index++) {
-                var phoneme1 = iterator1[index];
-                var phoneme2 = iterator2[index > limit ? limit : index];
+            for (var index = 0; index < mostPhonemes.Count; index++) {
+                var phoneme1 = mostPhonemes[index];
+                var phoneme2 = lessPhonemes[index > limit ? limit : index];
 
-                if (iterator2.Count < index + 1) {
-                    if (index > 0) {
-                        var compareTo = iterator1[index - 1];
-
-                        //if (phoneme1.IsSilent(compareTo)) {
-                        if (phoneme1.IsSilent()) {
-                            continue;
-                        }
+                if (lessPhonemes.Count < index + 1) {
+                    if(mostPhonemes[index-1].Id != phoneme2.Id) {
+                        reason = "Invalid number of phonemes";
+                        return false;
                     }
-
-                    return false;
                 }
 
                 if (!phoneme1.SoundsLike(phoneme2)) {
+                    reason = "Phonemes do not sound alike.";
                     return false;
                 }
             }
 
+            reason = string.Empty;
             return true;
+        }
+
+        public static bool IsRhyme(Syllable syllable1, Syllable syllable2) {
+            return IsRhyme(syllable1, syllable2, out _);
         }
 
         public static List<Word> GetPhonemeRhymes(Syllable syllable, int maxSyllables = 0) {

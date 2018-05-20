@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language.Interfaces;
-using CrowdCode.Library.Modules.Language.Syllables;
+using Starship.Language.Interfaces;
 using Starship.Language.Phonetics;
 using Starship.Language.Syllables;
 
-namespace CrowdCode.Library.Modules.Language {
+namespace Starship.Language {
     public class Word : HasSyllables {
         public Word() {
             Phonemes = new List<Phoneme>();
@@ -63,13 +61,21 @@ namespace CrowdCode.Library.Modules.Language {
             var ngram = NGrams.FirstOrDefault(each => each.Index == index);
             return ngram?.NGram.Frequency ?? 0;
         }*/
-
+        
         public IEnumerable<Word> GetHomographs() {
             yield return this;
 
             foreach (var word in Homographs) {
                 yield return word;
             }
+        }
+
+        public long GetNGramScore() {
+            return NGrams.Sum(each => each.NGram.Frequency);
+        }
+
+        public long GetNGramScore(int index) {
+            return NGrams.Where(each => each.Index >= index).Sum(each => each.NGram.Frequency);
         }
 
         public string GetPhonemeText() {

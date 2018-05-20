@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using Starship.Azure.Data;
 using Starship.Core.Extensions;
-using Starship.Language.Lyrics.Models;
 
-namespace CrowdCode.Library.Entities {
+namespace Starship.Language.Lyrics.Models {
 
     [Table("Word")]
     public class WordEntity : BaseEntity {

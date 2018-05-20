@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CrowdCode.Library.Modules.Language.Syllables {
+﻿namespace Starship.Language.Syllables {
     public struct RuleEvaluation {
         
         public bool Outcome { get; set; }

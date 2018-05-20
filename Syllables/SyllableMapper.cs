@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language.Syllables.Rules;
 using Starship.Language.Phonetics;
-using Starship.Language.Syllables;
 using Starship.Language.Syllables.Rules;
 
-namespace CrowdCode.Library.Modules.Language.Syllables {
+namespace Starship.Language.Syllables {
     public class SyllableMapper {
 
         static SyllableMapper() {

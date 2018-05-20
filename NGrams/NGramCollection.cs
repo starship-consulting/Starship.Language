@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CrowdCode.Library.Modules.Language.NGrams {
+namespace Starship.Language.NGrams {
     public class NGramCollection : Dictionary<int, NGramTree> {
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CrowdCode.Library.Modules.Language.Resources;
 using Starship.Core.Extensions;
+using Starship.Language.Resources;
 
 namespace Starship.Language.Phonetics {
     public static class ConsonantBlends {

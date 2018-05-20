@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language;
-using CrowdCode.Library.Modules.Language.NGrams;
-using CrowdCode.Library.Modules.Language.Resources;
 using Starship.Core.Extensions;
 using Starship.Language.NGrams;
 using Starship.Language.Phonetics;
+using Starship.Language.Resources;
 
 namespace Starship.Language {
     public class English {
@@ -83,7 +81,7 @@ namespace Starship.Language {
             return NGrams.ContainsKey(length) ? NGrams[length] : null;
         }
 
-        private static void InitializeNGrams() {
+        public static void InitializeNGrams() {
             if (NGrams == null) {
                 var builder = new NGramBuilder();
                 NGrams = builder.Load();

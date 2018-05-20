@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CrowdCode.Library.Modules.Language.Syllables;
 using Starship.Language.Phonetics;
 using Starship.Language.Syllables;
 
-namespace CrowdCode.Library.Modules.Language.Interfaces {
+namespace Starship.Language.Interfaces {
     public interface HasSyllables {
         List<Syllable> Syllables { get; }
     }

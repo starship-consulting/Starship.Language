@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CrowdCode.Library.Modules.Language.Resources {
+namespace Starship.Language.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CrowdCode.Library.Modules.Language.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CrowdCode.Library.Modules.Language.Resources.EnglishResources", typeof(EnglishResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Starship.Language.Resources.EnglishResources", typeof(EnglishResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

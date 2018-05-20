@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CrowdCode.Library.Modules.Language {
+﻿namespace Starship.Language {
     public class ColoredText {
 
         public string Text { get; set; }

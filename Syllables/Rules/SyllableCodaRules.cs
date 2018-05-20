@@ -1,8 +1,6 @@
-﻿using System;
-using Starship.Language.Phonetics;
-using Starship.Language.Syllables.Rules;
+﻿using Starship.Language.Phonetics;
 
-namespace CrowdCode.Library.Modules.Language.Syllables.Rules {
+namespace Starship.Language.Syllables.Rules {
     public class SyllableCodaRules : SyllableRule {
         public override RuleEvaluation ShouldAddPhoneme(Phoneme phoneme, SyllableContext context) {
             if (context.CurrentSyllable.HasNucleus()) {

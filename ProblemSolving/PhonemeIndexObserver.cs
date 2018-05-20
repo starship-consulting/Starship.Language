@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CrowdCode.Library.Modules.Language.ProblemSolving {
+﻿namespace Starship.Language.ProblemSolving {
     public class PhonemeIndexObserver {
     }
 }

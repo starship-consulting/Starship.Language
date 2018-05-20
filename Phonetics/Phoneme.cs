@@ -63,6 +63,10 @@ namespace Starship.Language.Phonetics {
 
             var comparer = new Core.Utility.ObjectComparer<Phoneme>(this, phoneme);
 
+            /*if (comparer.Compare((p1, p2) => p1.ArticulationManner == ArticulationManners.Stop && p1.ArticulationPlace == ArticulationPlaces.Alveolar)) {
+                return true;
+            }*/
+
             if (comparer.Compare((p1, p2) => p1.ArticulationManner == ArticulationManners.Fricative && p1.ArticulationPlace == ArticulationPlaces.Alveolar && p2.ArticulationManner == ArticulationManners.Stop && p2.ArticulationPlace == ArticulationPlaces.Alveolar)) {
                 return true;
             }
@@ -71,6 +75,10 @@ namespace Starship.Language.Phonetics {
         }
 
         public bool IsSilent() {
+            /*if(Letters == "t") {
+                return true;
+            }*/
+
             if (Text == "ah" && Letters == "t") {
                 return true;
             }

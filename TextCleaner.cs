@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace CrowdCode.Library.Modules.Language {
+namespace Starship.Language {
     public static class TextCleaner {
 
         public static string Clean(string input) {

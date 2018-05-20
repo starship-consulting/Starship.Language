@@ -1,5 +1,4 @@
 ﻿using System.Net.Http;
-using CrowdCode.Library.Modules.Language;
 
 namespace Starship.Language {
     public class DictionaryApiClient {

@@ -1,8 +1,6 @@
-﻿using System;
-using CrowdCode.Library.Modules.Language.NGrams;
-using Starship.Language;
+﻿using Starship.Language.NGrams;
 
-namespace CrowdCode.Library.Modules.Language {
+namespace Starship.Language {
     public class OrderedWord {
 
         public OrderedWord(NGram ngram, string word, int index) {
